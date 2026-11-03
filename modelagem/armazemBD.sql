@@ -4,10 +4,23 @@ use armazembd;
 CREATE TABLE IF NOT EXISTS cliente  (
    idcliente  INT UNSIGNED NOT NULL,
    nome  VARCHAR(145) NOT NULL,
-   endereço  VARCHAR(145) NOT NULL,
+   cep CHAR(8) NOT NULL,
+   numero VARCHAR(10) NOT NULL,
+   bairro VARCHAR(60) NOT NULL,
    idade  INT NOT NULL,
   PRIMARY KEY ( idcliente ),
-  UNIQUE INDEX  idcliente_UNIQUE  ( idcliente  ASC) VISIBLE)
+   INDEX  idcliente_  ( idcliente))
+ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS Cliente_email (
+  FK_idcliente INT UNSIGNED NOT NULL,
+  email VARCHAR(95) NOT NULL,
+  PRIMARY KEY (FK_idcliente, email),
+  CONSTRAINT fk_cliente_email
+    FOREIGN KEY (FK_idcliente)
+    REFERENCES cliente (idcliente)
+	ON DELETE CASCADE
+)
 ENGINE = InnoDB;
 
 
@@ -16,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Turno  (
    hora_inicio  TIME NULL,
    hora_fim  TIME NULL,
   PRIMARY KEY ( idTurno ),
-  UNIQUE INDEX  idTurno_UNIQUE  ( idTurno  ASC) VISIBLE)
+   INDEX  idTurno_  ( idTurno  ))
 ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS funcionario  (
@@ -25,7 +38,7 @@ CREATE TABLE IF NOT EXISTS funcionario  (
    CPF  VARCHAR(11) NULL,
    FK_idturno  INT UNSIGNED NOT NULL,
   PRIMARY KEY ( idfuncionario ),
-  UNIQUE INDEX  idturno_UNIQUE  ( FK_idturno  ASC) VISIBLE,
+  INDEX  idturno_  ( FK_idturno  ),
   CONSTRAINT  idturno 
     FOREIGN KEY ( FK_idturno )
     REFERENCES Turno  ( idTurno )
@@ -39,14 +52,11 @@ CREATE TABLE IF NOT EXISTS pedido  (
    FK_idcliente  INT UNSIGNED NOT NULL,
    FK_idfuncionario  INT UNSIGNED NOT NULL,
   PRIMARY KEY ( idpedido ),
-  UNIQUE INDEX  idpedido_UNIQUE  ( idpedido  ASC) VISIBLE,
-  UNIQUE INDEX  preço_UNIQUE  ( preço  ASC) VISIBLE,
-  CONSTRAINT  idcliente 
+   INDEX  idpedido_  ( idpedido  ),
+  CONSTRAINT  fk_idcliente 
     FOREIGN KEY ( FK_idcliente )
-    REFERENCES cliente  ( idcliente )
-     
-     ,
-  CONSTRAINT  fk_idfuncionario 
+    REFERENCES cliente  ( idcliente ),
+	CONSTRAINT  fk_idfuncionario 
     FOREIGN KEY ( FK_idfuncionario )
     REFERENCES funcionario  ( idfuncionario )
 )
@@ -68,7 +78,7 @@ CREATE TABLE IF NOT EXISTS produto  (
    quantidade  INT UNSIGNED NOT NULL,
    FK_CNPJ  VARCHAR(14) NOT NULL,
   PRIMARY KEY ( idproduto ),
-  UNIQUE INDEX  idproduto_UNIQUE  ( idproduto  ASC) VISIBLE,
+   INDEX  idproduto_  ( idproduto  ),
   CONSTRAINT  CNPJ 
     FOREIGN KEY ( FK_CNPJ )
     REFERENCES fornecedor  ( CNPJ )
@@ -83,7 +93,7 @@ CREATE TABLE IF NOT EXISTS armazem  (
    qtd_produtos  INT UNSIGNED NOT NULL,
    FK_idfuncionario  INT UNSIGNED NOT NULL,
   PRIMARY KEY ( idarmazem ),
-  UNIQUE INDEX  idarmazem_UNIQUE  ( idarmazem  ASC) VISIBLE,
+   INDEX  idarmazem_  ( idarmazem  ),
   CONSTRAINT  idfuncionario 
     FOREIGN KEY ( FK_idfuncionario )
     REFERENCES funcionario  ( idfuncionario )
@@ -105,9 +115,9 @@ CREATE TABLE IF NOT EXISTS contem  (
    idpedido  INT UNSIGNED NOT NULL,
    idproduto  INT UNSIGNED NOT NULL,
    qtd_itens  INT UNSIGNED NOT NULL,
-  UNIQUE INDEX  idpedido_UNIQUE  ( idpedido  ASC) VISIBLE,
+   INDEX  idpedido_  ( idpedido  ),
   PRIMARY KEY ( idpedido ,  idproduto ),
-  UNIQUE INDEX  idproduto_UNIQUE  ( idproduto  ASC) VISIBLE,
+  INDEX  idproduto ( idproduto  ),
   CONSTRAINT  idpedido 
     FOREIGN KEY ( idpedido )
     REFERENCES pedido  ( idpedido )
@@ -119,4 +129,3 @@ CREATE TABLE IF NOT EXISTS contem  (
      
      )
 ENGINE = InnoDB;
-
