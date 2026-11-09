@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS cliente (
   idcliente INT UNSIGNED NOT NULL,
   nome      VARCHAR(145) NOT NULL,
   cep       CHAR(8)      NOT NULL,   -- sem hífen
-  numero    VARCHAR(10)  NOT NULL,
+  numero    VARCHAR(15)  NOT NULL,
   bairro    VARCHAR(60)  NOT NULL,
   idade     INT          NOT NULL,
   PRIMARY KEY (idcliente)
