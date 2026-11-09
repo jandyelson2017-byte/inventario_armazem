@@ -144,16 +144,10 @@ INSERT INTO recebe (FK_idarmazen, qtd_recebida) VALUES (1, 100);
 INSERT INTO contem (idpedido, idproduto, qtd_itens) VALUES (101, 1, 1);
 
 -- =====================================================================
--- CONSULTAS (INNER JOIN: só linhas com correspondência; ON liga FK à PK)
+-- CONSULTAS
 -- =====================================================================
 
--- E-mails da cliente Ana
-SELECT c.nome AS 'Cliente', e.email AS 'E-mail'
-FROM cliente c
-INNER JOIN Cliente_email e ON c.idcliente = e.FK_idcliente
-WHERE c.idcliente = 1;
-
--- Pedido com cliente e atendente
+-- INNER JOIN: pedido com cliente e atendente (ON liga FK à PK)
 SELECT p.idpedido AS 'Pedido', c.nome AS 'Cliente',
        f.cargo AS 'Atendente', p.preço AS 'Valor'
 FROM pedido p
@@ -161,29 +155,7 @@ INNER JOIN cliente c     ON p.FK_idcliente     = c.idcliente
 INNER JOIN funcionario f ON p.FK_idfuncionario = f.idfuncionario
 ORDER BY p.idpedido;
 
--- Itens do pedido com a categoria do produto
-SELECT p.idpedido AS 'Pedido', c.nome AS 'Cliente',
-       pr.categoria AS 'Categoria', ct.qtd_itens AS 'Qtd'
-FROM contem ct
-INNER JOIN pedido p   ON ct.idpedido    = p.idpedido
-INNER JOIN produto pr ON ct.idproduto   = pr.idproduto
-INNER JOIN cliente c  ON p.FK_idcliente = c.idcliente
-ORDER BY p.idpedido;
-
--- Armazéns, responsáveis e turno
-SELECT a.idarmazem AS 'Armazém', a.local AS 'Local',
-       f.cargo AS 'Responsável', t.hora_inicio AS 'Início', t.hora_fim AS 'Fim'
-FROM armazem a
-INNER JOIN funcionario f ON a.FK_idfuncionario = f.idfuncionario
-INNER JOIN Turno t       ON f.FK_idturno       = t.idTurno;
-
--- Produtos e fornecedores
-SELECT pr.idproduto AS 'Produto', pr.categoria AS 'Categoria',
-       pr.quantidade AS 'Estoque', f.CNPJ AS 'Fornecedor'
-FROM produto pr
-INNER JOIN fornecedor f ON pr.FK_CNPJ = f.CNPJ;
-
--- Pedidos e itens por cliente (GROUP BY)
+-- GROUP BY: pedidos e itens por cliente
 SELECT c.nome AS 'Cliente',
        COUNT(DISTINCT p.idpedido) AS 'Pedidos',
        SUM(ct.qtd_itens)          AS 'Itens'
@@ -192,14 +164,6 @@ INNER JOIN pedido p  ON c.idcliente = p.FK_idcliente
 INNER JOIN contem ct ON p.idpedido  = ct.idpedido
 GROUP BY c.idcliente, c.nome
 ORDER BY `Itens` DESC;
-
--- Armazéns que receberam mais de 50 unidades (HAVING)
-SELECT a.idarmazem AS 'Armazém', a.local AS 'Local',
-       SUM(r.qtd_recebida) AS 'Total Recebido'
-FROM armazem a
-INNER JOIN recebe r ON a.idarmazem = r.FK_idarmazen
-GROUP BY a.idarmazem, a.local
-HAVING SUM(r.qtd_recebida) > 50;
 
 -- =====================================================================
 -- UPDATE E DELETE (sempre com WHERE)
