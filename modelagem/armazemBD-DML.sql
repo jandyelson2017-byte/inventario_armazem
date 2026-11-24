@@ -57,22 +57,22 @@ INSERT INTO produto (idproduto, nome, categoria, preco_unitario, quantidade, FK_
 -- =====================================================================
 
 INSERT INTO armazem (idarmazem, local, telefone, qtd_produtos, FK_idfuncionario) VALUES
-(1, 'Galpão Central - Natal/RN',          '8433330001', 405, 1),
-(2, 'Galpão Norte - Mossoró/RN',          '8433330002', 320, 2),
-(3, 'Galpão Litoral - Parnamirim/RN',     '8433330003', 280, 3),
-(4, 'Galpão Seridó - Caicó/RN',           '8433330004', 260, 4),
-(5, 'Galpão Agreste - Currais Novos/RN',  '8433330005', 185, 5);
+(1, 'Galpão Central - Natal/RN',          '8433330001', 490, 1),
+(2, 'Galpão Norte - Mossoró/RN',          '8433330002', 250, 2),
+(3, 'Galpão Litoral - Parnamirim/RN',     '8433330003', 500, 3),
+(4, 'Galpão Seridó - Caicó/RN',           '8433330004',  60, 4),
+(5, 'Galpão Agreste - Currais Novos/RN',  '8433330005', 150, 5);
 
 INSERT INTO recebe (idrecebimento, FK_idarmazen, FK_idproduto, qtd_recebida, data_recebimento) VALUES
 (1, 1, 1, 200, '2026-09-28'),
 (2, 1, 3,  80, '2026-09-28'),
 (3, 1, 5, 120, '2026-09-29'),
 (4, 1, 6,  90, '2026-09-29'),
-(5, 2, 7, 400, '2026-09-29'),
+(5, 2, 7, 250, '2026-09-29'),
 (6, 3, 2, 350, '2026-09-30'),
 (7, 3, 4, 150, '2026-09-30'),
-(8, 4, 8,  60, '2026-10-01');
-
+(8, 4, 8,  60, '2026-10-01'),
+(9, 5, 7, 150, '2026-10-01');
 -- =====================================================================
 -- Cenário 3 — Chegada dos Primeiros Clientes e Cadastros:
 -- Na primeira semana de outubro, cinco clientes se cadastraram:
